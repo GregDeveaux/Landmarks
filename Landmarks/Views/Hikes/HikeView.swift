@@ -26,7 +26,9 @@ struct HikeView: View {
                 Spacer()
 
                 Button {
-                    showDetail.toggle()
+                    withAnimation {
+                        showDetail.toggle()
+                    }
                 } label: {
                     Label("Graph", systemImage: "chevron.right.circle")
                         .labelStyle(.iconOnly)
@@ -39,6 +41,7 @@ struct HikeView: View {
 
             if showDetail {
                 HikeDetail(hike: hike)
+                    .transition(.moveAndFade)
             }
         }
     }
@@ -51,5 +54,11 @@ struct HikeView_Previews: PreviewProvider {
                 .padding()
             Spacer()
         }
+    }
+}
+
+extension AnyTransition {
+    static var moveAndFade: AnyTransition {
+        .asymmetric(insertion: AnyTransition.move(edge: .trailing), removal: AnyTransition.scale.combined(with: .opacity))
     }
 }
